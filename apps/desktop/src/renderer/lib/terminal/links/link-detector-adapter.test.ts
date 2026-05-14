@@ -179,12 +179,12 @@ describe("LinkDetectorAdapter", () => {
 		// Simulate a 30-col terminal where a long path wraps
 		const { adapter } = createAdapter(
 			[
-				// Line 1: "see /parent/cwd/apps/web/sr" (30 chars)
-				{ text: "see /parent/cwd/apps/web/sr" },
+				// Line 1: "see /parent/cwd/apps/api/sr" (30 chars)
+				{ text: "see /parent/cwd/apps/api/sr" },
 				// Line 2 (wrapped): "c/app/page.tsx:1 for info" (continues from line 1)
 				{ text: "c/app/page.tsx:1 for info", isWrapped: true },
 			],
-			["/parent/cwd/apps/web/src/app/page.tsx"],
+			["/parent/cwd/apps/api/src/app/page.tsx"],
 			{ cols: 30, initialCwd: "/parent/cwd" },
 		);
 
@@ -197,7 +197,7 @@ describe("LinkDetectorAdapter", () => {
 		expect(links?.length).toBeGreaterThanOrEqual(1);
 		// The detected text should be the full path including suffix
 		const pathLink = links?.find((l) =>
-			l.text.includes("apps/web/src/app/page.tsx"),
+			l.text.includes("apps/api/src/app/page.tsx"),
 		);
 		expect(pathLink).toBeDefined();
 	});

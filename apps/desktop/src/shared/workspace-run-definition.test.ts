@@ -51,7 +51,7 @@ describe("selectWorkspaceRunDefinition", () => {
 		const definition = selectWorkspaceRunDefinition({
 			projectId: "project-a",
 			configRunCommands: ["bun dev"],
-			configCwd: "apps/web",
+			configCwd: "apps/api",
 			presets: [],
 		});
 
@@ -59,7 +59,7 @@ describe("selectWorkspaceRunDefinition", () => {
 			source: "project-config",
 			projectId: "project-a",
 			commands: ["bun dev"],
-			cwd: "apps/web",
+			cwd: "apps/api",
 		});
 	});
 

@@ -306,7 +306,7 @@ describe("configRouter", () => {
 			mkdirSync(dir, { recursive: true });
 			writeFileSync(
 				join(dir, "config.json"),
-				JSON.stringify({ run: ["bun dev"], cwd: "apps/web" }),
+				JSON.stringify({ run: ["bun dev"], cwd: "apps/api" }),
 				"utf-8",
 			);
 
@@ -316,7 +316,7 @@ describe("configRouter", () => {
 				source: "project-config",
 				projectId: PROJECT_ID,
 				commands: ["bun dev"],
-				cwd: "apps/web",
+				cwd: "apps/api",
 			});
 		});
 	});

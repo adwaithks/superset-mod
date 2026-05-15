@@ -469,35 +469,31 @@ step_write_env() {
 
     # Port allocation for multi-worktree dev instances
     # Each workspace gets a range of 20 ports from its base.
-    # Offsets: +0 web, +1 api, +2 marketing, +3 admin, +4 docs,
-    #          +5 desktop vite, +6 notifications, +7 streams, +8 streams internal, +9 electric,
-    #          +10 caddy (HTTP/2 reverse proxy for API electric endpoint), +11 code inspector,
-    #          +12 wrangler (electric-proxy worker), +13 relay
+    # Offsets: +0 web, +1 api, +2 docs,
+    #          +3 desktop vite, +4 notifications, +5 streams, +6 streams internal, +7 electric,
+    #          +8 caddy (HTTP/2 reverse proxy for API electric endpoint), +9 code inspector,
+    #          +10 wrangler (electric-proxy worker), +11 relay
     local BASE=$SUPERSET_PORT_BASE
 
     # App ports (fixed offsets from base)
     local WEB_PORT=$((BASE))
     local API_PORT=$((BASE + 1))
-    local MARKETING_PORT=$((BASE + 2))
-    local ADMIN_PORT=$((BASE + 3))
-    local DOCS_PORT=$((BASE + 4))
-    local DESKTOP_VITE_PORT=$((BASE + 5))
-    local DESKTOP_NOTIFICATIONS_PORT=$((BASE + 6))
-    local STREAMS_PORT=$((BASE + 7))
-    local STREAMS_INTERNAL_PORT=$((BASE + 8))
-    local ELECTRIC_PORT=$((BASE + 9))
-    local CADDY_ELECTRIC_PORT=$((BASE + 10))
-    local CODE_INSPECTOR_PORT=$((BASE + 11))
-    local WRANGLER_PORT=$((BASE + 12))
-    local RELAY_PORT=$((BASE + 13))
+    local DOCS_PORT=$((BASE + 2))
+    local DESKTOP_VITE_PORT=$((BASE + 3))
+    local DESKTOP_NOTIFICATIONS_PORT=$((BASE + 4))
+    local STREAMS_PORT=$((BASE + 5))
+    local STREAMS_INTERNAL_PORT=$((BASE + 6))
+    local ELECTRIC_PORT=$((BASE + 7))
+    local CADDY_ELECTRIC_PORT=$((BASE + 8))
+    local CODE_INSPECTOR_PORT=$((BASE + 9))
+    local WRANGLER_PORT=$((BASE + 10))
+    local RELAY_PORT=$((BASE + 11))
 
     echo ""
     echo "# Workspace Ports (allocated from SUPERSET_PORT_BASE=$BASE, range=20)"
     write_env_var "SUPERSET_PORT_BASE" "$BASE"
     write_env_var "WEB_PORT" "$WEB_PORT"
     write_env_var "API_PORT" "$API_PORT"
-    write_env_var "MARKETING_PORT" "$MARKETING_PORT"
-    write_env_var "ADMIN_PORT" "$ADMIN_PORT"
     write_env_var "DOCS_PORT" "$DOCS_PORT"
     write_env_var "DESKTOP_VITE_PORT" "$DESKTOP_VITE_PORT"
     write_env_var "DESKTOP_NOTIFICATIONS_PORT" "$DESKTOP_NOTIFICATIONS_PORT"
@@ -512,8 +508,8 @@ step_write_env() {
     echo "# Cross-app URLs (overrides from root .env)"
     write_env_var "NEXT_PUBLIC_API_URL" "http://localhost:$API_PORT"
     write_env_var "NEXT_PUBLIC_WEB_URL" "http://localhost:$WEB_PORT"
-    write_env_var "NEXT_PUBLIC_MARKETING_URL" "http://localhost:$MARKETING_PORT"
-    write_env_var "NEXT_PUBLIC_ADMIN_URL" "http://localhost:$ADMIN_PORT"
+    write_env_var "NEXT_PUBLIC_MARKETING_URL" "https://superset.sh"
+    write_env_var "NEXT_PUBLIC_ADMIN_URL" "https://admin.superset.sh"
     write_env_var "NEXT_PUBLIC_DOCS_URL" "http://localhost:$DOCS_PORT"
     write_env_var "NEXT_PUBLIC_DESKTOP_URL" "http://localhost:$DESKTOP_VITE_PORT"
     write_env_var "EXPO_PUBLIC_WEB_URL" "http://localhost:$WEB_PORT"
@@ -561,8 +557,6 @@ step_write_env() {
   "ports": [
     { "port": $WEB_PORT, "label": "Web" },
     { "port": $API_PORT, "label": "API" },
-    { "port": $MARKETING_PORT, "label": "Marketing" },
-    { "port": $ADMIN_PORT, "label": "Admin" },
     { "port": $DOCS_PORT, "label": "Docs" },
     { "port": $DESKTOP_VITE_PORT, "label": "Desktop Vite" },
     { "port": $DESKTOP_NOTIFICATIONS_PORT, "label": "Notifications" },

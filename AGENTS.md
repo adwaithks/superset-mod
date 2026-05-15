@@ -12,13 +12,9 @@ Guidelines for agents and developers working in this repository.
 
 Bun + Turbo monorepo with:
 - **Apps**:
-  - `apps/web` - Main web application (app.superset.sh)
-  - `apps/marketing` - Marketing site (superset.sh)
-  - `apps/admin` - Admin dashboard
   - `apps/api` - API backend
   - `apps/desktop` - Electron desktop application
   - `apps/docs` - Documentation site
-  - `apps/mobile` - React Native mobile app (Expo)
 - **Packages**:
   - `packages/ui` - Shared UI components (shadcn/ui + TailwindCSS v4).
     - Add components: `npx shadcn@latest add <component>` (run in `packages/ui/`)

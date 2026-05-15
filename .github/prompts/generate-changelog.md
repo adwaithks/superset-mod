@@ -10,21 +10,19 @@ Generate a new changelog entry for this week based on merged PRs.
    - Skip PRs that are purely internal (CI/CD, dev tooling, refactors) unless they affect users
 
 2. **Check for existing changelog**
-   - Before creating a new file, check if a changelog already exists for this week's date
-   - Use `ls apps/marketing/content/changelog/` to see existing files
-   - If a file for today's date already exists, skip creation and report that a changelog already exists
+   - Before creating a new file, check if a changelog already exists for this week's date (e.g. under `apps/docs/` if you add a changelog section there, or in GitHub Releases).
+   - If an entry for today's date already exists, skip creation and report that a changelog already exists
 
 3. **Prioritize content**
    - **Lead with 2-4 major features** - These get their own sections with full descriptions
    - **Group smaller improvements** - Can combine related small changes under one heading
    - **Bug fixes go in a footnote section** - Brief one-liner summaries at the bottom
 
-4. **Create the changelog file**
-   - Create a new file at: `apps/marketing/content/changelog/YYYY-MM-DD-slug.mdx`
-   - Use today's date for the filename (e.g., `2026-01-27-descriptive-slug.mdx`)
-   - The slug should summarize the main features (e.g., `terminal-improvements`, `sidebar-workspaces`)
+4. **Create the changelog entry**
+   - Prefer publishing user-facing notes as a **GitHub Release** for this repo, or add an MDX page under `apps/docs/content/` if the docs site should carry dated release notes.
+   - If writing a docs MDX file, use a path like `apps/docs/content/changelog/YYYY-MM-DD-slug.mdx` and keep the format below.
 
-5. **Follow this exact format**:
+5. **Follow this exact format** (MDX):
 
 ```mdx
 ---
@@ -86,11 +84,8 @@ Brief description of the feature and its benefit to users.
 
 ## Reference Examples
 
-Read these files to understand the expected format:
-- `apps/marketing/content/changelog/2026-01-27-terminal-tab.mdx`
-- `apps/marketing/content/changelog/2026-01-20-changes-org-settings.mdx`
-- `apps/marketing/content/changelog/2026-01-06-sidebar-workspaces-status.mdx`
+Use recent GitHub Release notes for this repository, or existing MDX pages under `apps/docs/content/`, as style references.
 
 ## Output
 
-Create exactly one new changelog file. If there are no significant PRs to report or a changelog already exists for this week, do not create a file and report why.
+Publish exactly one changelog (GitHub Release and/or new docs MDX). If there are no significant PRs to report or a changelog already exists for this week, do not create duplicate content and report why.

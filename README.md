@@ -1,6 +1,6 @@
 <div align="center">
 
-<img width="full" alt="Superset" src="apps/marketing/public/images/readme-hero.png" />
+<img width="full" alt="Superset" src=".github/images/readme-hero.png" />
 
 ### The Code Editor for AI Agents
 

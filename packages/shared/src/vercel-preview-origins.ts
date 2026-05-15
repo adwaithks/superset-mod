@@ -1,11 +1,5 @@
-const vercelDeploymentApps = [
-	"api",
-	"web",
-	"admin",
-	"marketing",
-	"docs",
-] as const;
-const trustedPreviewBrowserApps = ["web", "admin", "marketing"] as const;
+const vercelDeploymentApps = ["api", "docs"] as const;
+const trustedPreviewBrowserApps = ["docs"] as const;
 
 function getDeploymentOrigin(deploymentUrl: string | URL | null | undefined) {
 	if (!deploymentUrl) {

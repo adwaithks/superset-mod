@@ -1,8 +1,11 @@
+import { and, eq } from "@tanstack/db";
+import { useLiveQuery } from "@tanstack/react-db";
 import { useEffect } from "react";
 import { env } from "renderer/env.renderer";
-import { useAccessibleV2Workspaces } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/hooks/useAccessibleV2Workspaces";
+import { authClient } from "renderer/lib/auth-client";
 import { useDashboardSidebarState } from "renderer/routes/_authenticated/hooks/useDashboardSidebarState";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
+import { MOCK_ORG_ID } from "shared/constants";
 
 const SEED_FLAG_KEY = "superset:dev:v2-sidebar-seeded";
 
@@ -17,20 +20,48 @@ const SEED_FLAG_KEY = "superset:dev:v2-sidebar-seeded";
 export function useDevSeedV2Sidebar(): void {
 	const collections = useCollections();
 	const { ensureWorkspaceInSidebar } = useDashboardSidebarState();
-	const { all: accessibleWorkspaces } = useAccessibleV2Workspaces();
+	const { data: session } = authClient.useSession();
+	const activeOrganizationId = env.SKIP_ENV_VALIDATION
+		? MOCK_ORG_ID
+		: (session?.session?.activeOrganizationId ?? null);
+	const currentUserId = session?.user?.id ?? null;
+
+	const { data: workspaceRows = [] } = useLiveQuery(
+		(q) =>
+			q
+				.from({ workspaces: collections.v2Workspaces })
+				.innerJoin({ hosts: collections.v2Hosts }, ({ workspaces, hosts }) =>
+					eq(workspaces.hostId, hosts.machineId),
+				)
+				.innerJoin(
+					{ userHosts: collections.v2UsersHosts },
+					({ hosts, userHosts }) => eq(userHosts.hostId, hosts.machineId),
+				)
+				.where(({ workspaces, userHosts }) =>
+					and(
+						eq(workspaces.organizationId, activeOrganizationId ?? ""),
+						eq(userHosts.userId, currentUserId ?? ""),
+					),
+				)
+				.select(({ workspaces }) => ({
+					id: workspaces.id,
+					projectId: workspaces.projectId,
+				})),
+		[activeOrganizationId, collections, currentUserId],
+	);
 
 	useEffect(() => {
 		if (env.NODE_ENV !== "development") return;
 		if (window.localStorage.getItem(SEED_FLAG_KEY) === "1") return;
-		if (accessibleWorkspaces.length === 0) return;
+		if (workspaceRows.length === 0) return;
 		if (collections.v2WorkspaceLocalState.state.size > 0) {
 			window.localStorage.setItem(SEED_FLAG_KEY, "1");
 			return;
 		}
 
-		for (const workspace of accessibleWorkspaces) {
+		for (const workspace of workspaceRows) {
 			ensureWorkspaceInSidebar(workspace.id, workspace.projectId);
 		}
 		window.localStorage.setItem(SEED_FLAG_KEY, "1");
-	}, [accessibleWorkspaces, collections, ensureWorkspaceInSidebar]);
+	}, [workspaceRows, collections, ensureWorkspaceInSidebar]);
 }

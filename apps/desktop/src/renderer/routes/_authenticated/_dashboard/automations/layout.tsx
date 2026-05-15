@@ -16,7 +16,7 @@ function AutomationsLayout() {
 		if (!isReady || allowed || handledRef.current) return;
 		handledRef.current = true;
 		gateFeature(GATED_FEATURES.AUTOMATIONS, () => {});
-		navigate({ to: "/v2-workspaces", replace: true });
+		navigate({ to: "/", replace: true });
 	}, [isReady, allowed, gateFeature, navigate]);
 
 	if (!isReady || !allowed) return null;

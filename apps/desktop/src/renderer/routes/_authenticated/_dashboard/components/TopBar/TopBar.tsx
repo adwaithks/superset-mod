@@ -8,7 +8,6 @@ import { useWorkspaceSidebarStore } from "renderer/stores/workspace-sidebar-stat
 import { NavigationControls } from "../NavigationControls";
 import { SidebarToggle } from "../SidebarToggle";
 import { OpenInMenuButton } from "./components/OpenInMenuButton";
-import { OrganizationDropdown } from "./components/OrganizationDropdown";
 import { ResourceConsumption } from "./components/ResourceConsumption";
 import { RightSidebarToggle } from "./components/RightSidebarToggle";
 import { SearchBarTrigger } from "./components/SearchBarTrigger";
@@ -102,7 +101,6 @@ export function TopBar() {
 						projectId={workspace.project?.id}
 					/>
 				) : null}
-				{!isV2CloudEnabled && <OrganizationDropdown />}
 				{isV2WorkspaceRoute && <RightSidebarToggle />}
 				{!isMac && <WindowControls />}
 			</div>

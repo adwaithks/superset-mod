@@ -91,8 +91,8 @@ export function WorkspaceMissingWorktreeState({
 						variant="ghost"
 						className="h-7 gap-1.5 px-2 text-[13px] font-medium"
 					>
-						<Link to="/v2-workspaces">
-							Browse workspaces
+						<Link to="/">
+							Go home
 							<ArrowRight
 								className="size-3.5"
 								strokeWidth={2}

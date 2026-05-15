@@ -21,7 +21,7 @@ export function WorkspaceCreateErrorState({
 
 	const handleDismiss = () => {
 		dismiss(workspaceId);
-		void navigate({ to: "/v2-workspaces" });
+		void navigate({ to: "/" });
 	};
 
 	return (

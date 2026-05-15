@@ -8,26 +8,15 @@ import { toast } from "@superset/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
 import { useMatchRoute, useNavigate } from "@tanstack/react-router";
-import { HiMiniPlus, HiOutlineClipboardDocumentList } from "react-icons/hi2";
-import {
-	LuClock,
-	LuFolderInput,
-	LuFolderPlus,
-	LuLayers,
-	LuPlus,
-} from "react-icons/lu";
+import { HiMiniPlus } from "react-icons/hi2";
+import { LuClock, LuFolderInput, LuFolderPlus, LuPlus } from "react-icons/lu";
 import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
 import { useHotkeyDisplay } from "renderer/hotkeys";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { useFolderFirstImport } from "renderer/routes/_authenticated/_dashboard/components/AddRepositoryModals/hooks/useFolderFirstImport";
 import { NavigationControls } from "renderer/routes/_authenticated/_dashboard/components/NavigationControls";
 import { SidebarToggle } from "renderer/routes/_authenticated/_dashboard/components/SidebarToggle";
-import { OrganizationDropdown } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/OrganizationDropdown";
 import { ResourceConsumption } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/ResourceConsumption";
-import {
-	tasksSearchFromFilters,
-	useTasksFilterStore,
-} from "renderer/routes/_authenticated/_dashboard/tasks/stores/tasks-filter-state";
 import { STROKE_WIDTH_THICK } from "renderer/screens/main/components/WorkspaceSidebar/constants";
 import { useOpenNewProjectModal } from "renderer/stores/add-repository-modal";
 import { useOpenNewWorkspaceModal } from "renderer/stores/new-workspace-modal";
@@ -70,21 +59,7 @@ export function DashboardSidebarHeader({
 	const isMac = platform === undefined || platform === "darwin";
 	const matchRoute = useMatchRoute();
 	const { gateFeature } = usePaywall();
-	const isWorkspacesListOpen = !!matchRoute({ to: "/v2-workspaces" });
-	const isTasksOpen = !!matchRoute({ to: "/tasks", fuzzy: true });
 	const isAutomationsOpen = !!matchRoute({ to: "/automations", fuzzy: true });
-
-	const {
-		tab: lastTab,
-		assignee: lastAssignee,
-		search: lastSearch,
-		typeTab: lastTypeTab,
-		projectFilter: lastProjectFilter,
-	} = useTasksFilterStore();
-
-	const handleWorkspacesClick = () => {
-		navigate({ to: "/v2-workspaces" });
-	};
 
 	const handleAutomationsClick = () => {
 		gateFeature(GATED_FEATURES.AUTOMATIONS, () => {
@@ -92,44 +67,9 @@ export function DashboardSidebarHeader({
 		});
 	};
 
-	const handleTasksClick = () => {
-		gateFeature(GATED_FEATURES.TASKS, () => {
-			navigate({
-				to: "/tasks",
-				search: tasksSearchFromFilters({
-					tab: lastTab,
-					assignee: lastAssignee,
-					search: lastSearch,
-					typeTab: lastTypeTab,
-					projectFilter: lastProjectFilter,
-				}),
-			});
-		});
-	};
-
 	if (isCollapsed) {
 		return (
 			<div className="flex flex-col items-center gap-2 border-b border-border py-2">
-				<OrganizationDropdown variant="collapsed" />
-
-				<Tooltip delayDuration={300}>
-					<TooltipTrigger asChild>
-						<button
-							type="button"
-							onClick={handleWorkspacesClick}
-							className={cn(
-								"flex size-8 items-center justify-center rounded-md transition-colors",
-								isWorkspacesListOpen
-									? "bg-accent text-foreground"
-									: "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-							)}
-						>
-							<LuLayers className="size-4" />
-						</button>
-					</TooltipTrigger>
-					<TooltipContent side="right">Workspaces</TooltipContent>
-				</Tooltip>
-
 				<Tooltip delayDuration={300}>
 					<TooltipTrigger asChild>
 						<button
@@ -146,24 +86,6 @@ export function DashboardSidebarHeader({
 						</button>
 					</TooltipTrigger>
 					<TooltipContent side="right">Automations</TooltipContent>
-				</Tooltip>
-
-				<Tooltip delayDuration={300}>
-					<TooltipTrigger asChild>
-						<button
-							type="button"
-							onClick={handleTasksClick}
-							className={cn(
-								"flex size-8 items-center justify-center rounded-md transition-colors",
-								isTasksOpen
-									? "bg-accent text-foreground"
-									: "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-							)}
-						>
-							<HiOutlineClipboardDocumentList className="size-4" />
-						</button>
-					</TooltipTrigger>
-					<TooltipContent side="right">Tasks</TooltipContent>
 				</Tooltip>
 
 				<Tooltip delayDuration={300}>
@@ -227,22 +149,6 @@ export function DashboardSidebarHeader({
 				<NavigationControls />
 				<ResourceConsumption surface="v2" className="ml-auto" />
 			</div>
-			<OrganizationDropdown variant="expanded" />
-
-			<button
-				type="button"
-				onClick={handleWorkspacesClick}
-				className={cn(
-					"flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
-					isWorkspacesListOpen
-						? "bg-accent text-foreground"
-						: "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-				)}
-			>
-				<LuLayers className="size-4 shrink-0" />
-				<span className="flex-1 text-left">Workspaces</span>
-			</button>
-
 			<button
 				type="button"
 				onClick={handleAutomationsClick}
@@ -255,20 +161,6 @@ export function DashboardSidebarHeader({
 			>
 				<LuClock className="size-4 shrink-0" />
 				<span className="flex-1 text-left">Automations</span>
-			</button>
-
-			<button
-				type="button"
-				onClick={handleTasksClick}
-				className={cn(
-					"flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
-					isTasksOpen
-						? "bg-accent text-foreground"
-						: "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-				)}
-			>
-				<HiOutlineClipboardDocumentList className="size-4 shrink-0" />
-				<span className="flex-1 text-left">Tasks</span>
 			</button>
 
 			<div className="flex items-center gap-0">

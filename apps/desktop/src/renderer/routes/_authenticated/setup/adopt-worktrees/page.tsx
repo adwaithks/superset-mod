@@ -46,7 +46,7 @@ function OnboardingAdoptWorktreesPage() {
 
 	const goToDashboard = useCallback(
 		(replace: boolean) => {
-			navigate({ to: "/v2-workspaces", replace });
+			navigate({ to: "/", replace });
 		},
 		[navigate],
 	);
